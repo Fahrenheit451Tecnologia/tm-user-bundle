@@ -1,0 +1,36 @@
+{
+    "name": "tm/tm-user-bundle",
+    "description": "Simplified and strip down version of FOS User Bundle",
+    "type": "symfony-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Fitzpatrick",
+            "email": "fitz@michaelfitzpatrick.co.uk"
+        },
+        {
+            "name": "Time Manager",
+            "homepage": "https://www.timemanagerweb.com/"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "jms/di-extra-bundle": "~1.8",
+        "beberlei/assert": "^2.7",
+        "pagerfanta/pagerfanta": "1.0.*",
+        "symfony/framework-bundle": "~2.7|~3.0|~4.0",
+        "symfony/console": "~2.3|~3.0",
+        "doctrine/common": "~2.4",
+        "symfony/http-kernel": "^2.7|^3.0",
+        "doctrine/orm": "~2.4,>=2.4.5",
+        "symfony/security-core": "^2.7|^3.0",
+        "jms/serializer": "^1.7",
+        "symfony/form": "^2.7|^3.0",
+        "symfony/validator": "^2.7|^3.0",
+
+    },
+    "autoload": {
+        "psr-4": {"TM\\TMUserBundle\\": ""}
+    },
+    "minimum-stability": "stable"
+}

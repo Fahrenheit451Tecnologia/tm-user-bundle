@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use TM\UserBundle\Model\UserInterface;
-use TM\UserBundle\Repository\RepositoryRegistryInterface;
+use TM\UserBundle\Repository\RepositoryProvider;
 
 /**
  * @DI\Service("tm.security.provider.user")
@@ -16,20 +16,20 @@ use TM\UserBundle\Repository\RepositoryRegistryInterface;
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var RepositoryRegistryInterface
+     * @var RepositoryProvider
      */
-    protected $repositoryRegistry;
+    protected $userRepositoryProvider;
 
     /**
      * @DI\InjectParams({
-     *     "repositoryRegistry" = @DI\Inject("tm.registry.repository")
+     *     "userRepositoryProvider" = @DI\Inject("tm.provider.user_repository")
      * })
      *
-     * @param RepositoryRegistryInterface $repositoryRegistry
+     * @param RepositoryProvider $repositoryProvider
      */
-    public function __construct(RepositoryRegistryInterface $repositoryRegistry)
+    public function __construct(RepositoryProvider $repositoryProvider)
     {
-        $this->repositoryRegistry = $repositoryRegistry;
+        $this->userRepositoryProvider = $repositoryProvider;
     }
 
     /**
@@ -39,7 +39,7 @@ class UserProvider implements UserProviderInterface
     {
 
         if(preg_match('/^.+\@\S+\.\S+$/', $usernameOrEmail)){
-            if (null === $user = $this->repositoryRegistry->getUserRepository()->findByEmail($usernameOrEmail)) {
+            if (null === $user = $this->userRepositoryProvider->getUserRepository()->findByEmail($usernameOrEmail)) {
                 throw new UsernameNotFoundException(sprintf(
                     'Email "%s" does not exist.',
                     $usernameOrEmail
@@ -49,7 +49,7 @@ class UserProvider implements UserProviderInterface
             return $user;
         }
 
-        if (null === $user = $this->repositoryRegistry->getUserRepository()->findByUsername($usernameOrEmail)) {
+        if (null === $user = $this->userRepositoryProvider->getUserRepository()->findByUsername($usernameOrEmail)) {
             throw new UsernameNotFoundException(sprintf(
                 'Username "%s" does not exist.',
                 $usernameOrEmail
@@ -72,7 +72,7 @@ class UserProvider implements UserProviderInterface
             ));
         }
 
-        if (null === $reloadedUser = $this->repositoryRegistry->getUserRepository()->findOneById($user->getId())) {
+        if (null === $reloadedUser = $this->userRepositoryProvider->getUserRepository()->findOneById($user->getId())) {
             throw new UsernameNotFoundException(sprintf(
                 'User with ID "%s" could not be reloaded.',
                 $user->getId()->toString()

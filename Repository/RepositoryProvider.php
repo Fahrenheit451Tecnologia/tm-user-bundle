@@ -31,7 +31,7 @@ class RepositoryProvider
 
     /**
      * @DI\InjectParams({
-     *     "doctrine" = @DI\Inject("doctrine")
+     *     "doctrine" = @DI\Inject("doctrine"),
      *     "className" = @DI\Inject("%tm.model.user.class")
      * })
      *

@@ -1,59 +1,53 @@
-<?php
-/**
- *
- */
+<?php declare(strict_types=1);
 
-namespace TM\UserBundle\Repository;
+namespace TM\RbacBundle\Repository;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
-use JMS\DiExtraBundle\Annotation as DI;
-use TM\UserBundle\Repository\UserRepository;
+use TM\UserBundle\Exception\ManagerNotFoundForClassName;
 
-/**
- * Class RepositoryProvider
- * @package TM\UserBundle\Repository
- *
- * @DI\Service("tm.provider.user_repository")
- */
 class RepositoryProvider
 {
-
     /**
      * @var ManagerRegistry
      */
-    private $doctrine;
+    private $registry;
 
     /**
      * @var string
      */
-    private $className;
+    private $userModelClassName;
 
     /**
-     * @DI\InjectParams({
-     *     "doctrine" = @DI\Inject("doctrine"),
-     *     "className" = @DI\Inject("%tm.model.user.class")
-     * })
-     *
-     * RepositoryProvider constructor.
-     * @param ManagerRegistry $doctrine
+     * @param ManagerRegistry $registry
+     * @param string $userModelClassName
+     */
+    public function __construct(
+        ManagerRegistry $registry,
+        string $userModelClassName
+    ) {
+        $this->registry = $registry;
+        $this->userModelClassName = $userModelClassName;
+    }
+
+    /**
+     * @return ObjectRepository|UserRepositoryInterface
+     */
+    public function getUserRepository() : UserRepositoryInterface
+    {
+        return $this->getRepository($this->userModelClassName);
+    }
+
+    /**
      * @param string $className
+     * @return ObjectRepository
      */
-    public function __construct(ManagerRegistry $doctrine, string $className)
+    private function getRepository(string $className) : ObjectRepository
     {
-        $this->doctrine = $doctrine;
-        $this->className = $className;
-    }
+        if (null === $manager = $this->registry->getManagerForClass($className)) {
+            throw new ManagerNotFoundForClassName($className);
+        }
 
-    /**
-     * @return ObjectRepository|UserRepository
-     */
-    public function getUserRepository()
-    {
-        return $this
-            ->doctrine
-            ->getManagerForClass($this->className)
-            ->getRepository($this->className);
+        return $manager->getRepository($className);
     }
-
 }

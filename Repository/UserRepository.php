@@ -10,7 +10,7 @@ use TM\ResourceBundle\Util\Canonicalizer;
 use TM\ResourceBundle\Uuid\UuidInterface;
 use TM\UserBundle\Model\UserInterface;
 
-abstract class UserRepository extends EntityRepository
+class UserRepository extends EntityRepository
 {
     /**
      * Create user

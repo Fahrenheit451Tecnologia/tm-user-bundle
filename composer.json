@@ -1,5 +1,5 @@
 {
-    "name": "tm/tm-user-bundle",
+    "name": "timemanager/tm-user-bundle",
     "description": "Simplified and strip down version of FOS User Bundle",
     "type": "symfony-plugin",
     "license": "MIT",

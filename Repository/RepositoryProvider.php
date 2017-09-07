@@ -2,10 +2,17 @@
 
 namespace TM\RbacBundle\Repository;
 
+use JMS\DiExtraBundle\Annotation as DI;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use TM\UserBundle\Exception\ManagerNotFoundForClassName;
 
+/**
+ * Class RepositoryProvider
+ * @package TM\RbacBundle\Repository
+ *
+ * @DI\Service("tm_user.provider.repository")
+ */
 class RepositoryProvider
 {
     /**
@@ -19,6 +26,10 @@ class RepositoryProvider
     private $userModelClassName;
 
     /**
+     * @DI\InjectParams({
+     *     "registry" = @DI\Inject("doctrine"),
+     *     "userModelClassName" = @DI\Inject("%tm.model.user.class")
+     *     })
      * @param ManagerRegistry $registry
      * @param string $userModelClassName
      */

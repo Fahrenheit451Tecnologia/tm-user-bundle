@@ -22,7 +22,7 @@ class UserProvider implements UserProviderInterface
 
     /**
      * @DI\InjectParams({
-     *     "userRepositoryProvider" = @DI\Inject("tm.provider.user_repository")
+     *     "userRepositoryProvider" = @DI\Inject("tm_user.provider.repository")
      * })
      *
      * @param RepositoryProvider $repositoryProvider

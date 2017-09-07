@@ -1,0 +1,6 @@
+services:
+    tm_user.provider.repository:
+        class: TM\UserBundle\Repository\RepositoryProvider
+        arguments:
+            - '@doctrine'
+            - '%tm_user.model.user.class%'
